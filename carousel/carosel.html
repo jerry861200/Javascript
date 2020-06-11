@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>Document</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <link
+    rel="stylesheet"
+    href="./css/style.css"
+  />
+</head>
+
+<body>
+  <div id="app">
+    <section>
+      <div class="container">
+        <div class="page-title">
+          <h1>{{title}}</h1>
+          <!-- <img :src="src" alt=""> -->
+        </div>
+        <div class="content">
+          <!-- index != 0 -->
+          <a v-if="index > 0" href="javadcript:;" class="arrow-left" @click="changeIndex(-1)"><-</a>
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-info">{{index+1}}</button>
+            <button type="button" class="btn btn-info">{{today.type}}</button>
+            <button type="button" class="btn btn-info">{{today.title}}</button>
+          </div>
+          <!-- index < total-1 -->
+          <a v-if="index < total-1" href="javadcript:;" class="arrow-right" @click="changeIndex(1)"><img src="https://www.flaticon.com/authors/freepik" alt="">-></a>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js'></script>
+  <script>
+    let data = {
+      title: "Vue.js ",
+      src:'',
+      index:0,
+      menu:[
+        {type:'主廚的話',title:'餐點簡介與相關說明'},
+        {type:'餐具擺盤',title:'萬用白瓷 VS Code'},
+        {type:'開胃餐點',title:'中式資料綁定佐無毒 jQuery'},
+        {type:'開胃餐點',title:'古早味事件佐畫面綁定'}
+      ]
+    };
+    let vm = new Vue({
+      el: '#app',
+      data:data,
+      computed:{
+        today(){
+          return this.menu[this.index]
+        },
+        total(){
+          return this.menu.length
+        }
+      },
+      methods:{
+        changeIndex(change){
+          
+          this.index = (this.index + change + this.total) % this.total;
+          
+        }
+      },
+    })
+  
+  </script>
+</body>
+
+</html>

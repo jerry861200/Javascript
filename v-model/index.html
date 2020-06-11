@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+  <title>Document</title>
+  <style>
+    .title {
+      display: flex;
+      justify-content: center;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+
+<body>
+  <div
+    class="container"
+    id="app"
+  >
+    <!-- 頭部 -->
+    <div class="title">
+      <div class="input">
+        {{name}}，
+        {{sex}}性，
+        {{age}}歲
+        {{ favor.length ? "，興趣是：" : ""}}{{favor.join("、")}}，
+        {{member ? '已' : '未' }}成為會員
+      </div>
+    </div>
+
+    <!-- 填寫資料 -->
+    <form action="">
+      <label for="">姓名</label>
+      <input v-model="name" >
+      <label for="">性別</label>
+      <input type="radio" v-model="sex" value="女">
+      <input type="radio" v-model="sex" value="男">
+      <br>
+      <label for="">年齡</label>
+      <select  v-model="age">
+        <option >20以下</option>
+        <option>20~30</option>
+        <option>30~40</option>
+        <option >40~50</option>
+      </select>
+      <br>
+      <label for="">興趣</label>
+      <input type="checkbox" v-model="favor" value="女友">女友
+      <input type="checkbox" v-model="favor" value="遊戲">遊戲
+      <br>
+      <label for="">成為會員</label>
+      <input type="checkbox" v-model="member">是
+    </form>
+
+
+  </div>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js'></script>
+
+  <script src="./js/day5.js"></script>
+</body>
+
+</html>
