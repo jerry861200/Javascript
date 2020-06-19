@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+  <title>Document</title>
+</head>
+
+<body>
+  <section id="app">
+    <!-- 增加 -->
+    <span>新增</span> <span>種類</span>
+    <select
+      name="type"
+      id=""
+      v-model="input.type"
+    >
+      <option>麵食</option>
+      <option>飯</option>
+      <option>餃類</option>
+      <option>湯品</option>
+    </select>
+    <label for="">名稱</label>
+    <input
+      type="text"
+      name="title"
+      v-model.trim="input.title"
+      @keyup.enter="inputHandler()"
+    >
+    <!-- 篩選 -->
+    <div>
+      <span>篩選</span>
+      <span>種類</span>
+      <select
+        name="type"
+        id=""
+        v-model="filter.type"
+      >
+        <option :value="null">請選擇</option>
+        <option v-for="item in typeList.sor">{{item}}</option>
+      </select>
+      <span>種類</span>
+      <select
+      name="title"
+      id=""
+      v-model="filter.title"
+    >
+      <option :value="null">請選擇</option>
+      <option v-for="item in titleList.sor">{{item}}</option>
+    </select>
+    </div>
+    <!-- 呈現 -->
+    <div>
+      <div  >
+        <span v-if = "content">{{content +1 }}</span>
+        <!-- <span> {{item.type}} </span>
+        <span> {{item.title}} </span> -->
+        <!-- <a :href="item.link"></a>   -->
+      </div>
+    </div>
+  </section>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js'></script>
+  <script>
+    let data = {
+      input: {
+        type: '',
+        title: ''
+      },
+      filter:{
+        type:null,
+        title:null
+      },
+      menu: [{
+          type: '麵食',
+          title: '泡麵',
+        },
+        {
+          type: '麵食',
+          title: '大魯麵',
+        }, {
+          type: '麵食',
+          title: '烏龍麵',
+        }, {
+          type: '麵食',
+          title: '拉麵',
+        }, {
+          type: '飯',
+          title: '蝦仁炒飯',
+        }, {
+          type: '飯',
+          title: '叉燒飯',
+        }, {
+          type: '餃類',
+          title: '水餃',
+        }, {
+          type: '湯品',
+          title: '玉米濃湯',
+        },
+      ]
+    }
+
+    let vm = new Vue({
+      el: '#app',
+      data: data,
+      methods: {
+        inputHandler() {
+          let {
+            type,
+            title
+          } = this.input;
+          if (title) {
+
+            this.menu.push({
+              type,
+              title,
+              link: 'javascript:;'
+            })
+            this.input.title = '';
+          }
+        }
+      },
+      computed: {
+        typeMenu(){
+          if(this.filter.type === '全部'){
+            return this.menu;
+          }else{
+            return this.menu.filter(item => item.type === this.filter.type)
+          }
+        },
+        titleMenu(){
+          if(this.filter.title === ''){
+            return this.typeMenu
+          }else{
+            return this.typeMenu.filter(item => item.title.includes(this.filter.title))
+          }
+        },
+        typeList(){
+          let obj = {
+            sor:[],
+            map:{},
+          }
+          this.menu.forEach(({type,title},index) => {
+             if(!obj.map[type]){
+               obj.sor.push(type);
+               obj.map[type] ={
+                 sor:[],
+                 map: {}
+               }
+             }
+             obj.map[type].sor.push(title);
+             obj.map[type].map[title] = index;
+             
+          });
+          return obj
+        },
+        titleList(){
+          // this.filter.title ===null
+          
+          if(this.filter.type){
+            return this.typeList.map[this.filter.type];
+          }else{
+            // return this.typeList;
+            return [];
+          }
+        },
+        content(){
+          if(this.filter.title) return this.titleList.map[this.filter.title]+1;
+          else return null;
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

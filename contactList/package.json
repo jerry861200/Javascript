@@ -1,0 +1,11 @@
+{
+  "name": "contactlist",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "json": "json-server --watch data.json --port 3030"
+  },
+  "author": "Jerry",
+  "license": "MIT"
+}

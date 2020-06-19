@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+  <title>Document</title>
+  <style>
+    .title {
+      display: flex;
+      justify-content: center;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+
+<body>
+  <div
+    class="container"
+    id="app"
+  >
+
+    <div class="title">
+      <div class="description">
+        <div @click="number++"> {{number}} </div>
+      </div>
+      <div class="description">
+        <div @click="obj.num++"> {{obj.num}} </div>
+      </div>
+      <div class="description">
+        <div @click="objListHandler(index)" v-for="(item,index) in objList "></div>
+      </div>
+      <div class="description">
+        <div @click="numListHandler(index)" v-for="(item,index) in numList "></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js'></script>
+
+  <script src="./js/day5.js"></script>
+</body>
+
+</html>
