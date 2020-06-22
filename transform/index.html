@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+  <title>Document</title>
+  <link
+    rel="stylesheet"
+    href="./css/style.css"
+  >
+</head>
+
+<body>
+  <div id="app">
+    <section>
+      <div class="container">
+        <div class="title">
+          <div class="description">
+            <a
+              v-if="index > 0"
+              class="arrow left"
+              @click="changeIndex(-1)"
+            ></a>
+            <!-- 重點 -->
+            <!-- <transition
+              name="fade"
+              mode="out-in"
+              appear
+            >
+              <div
+                class="menuItem white"
+                style="transform:scale3d(1.5,1.5,1)"
+                v-for="(item,i) in menu"
+                v-if="index === i"
+                :key="item.title"
+              >
+                <span class="number">{{ i+1 }}</span>
+                <span class="type">{{ item.type }}</span>
+                <a
+                  class="title"
+                  target="vue-iron"
+                  :href="item.link"
+                >{{ item.title }}</a>
+              </div>
+            </transition> -->
+            <transition
+              name="fade"
+              mode="out-in"
+              appear
+            >
+              <div
+                class="menuItem white"
+                v-for="(item,i) in menu"
+                v-if="index === i"
+                :key="item.title"
+              >
+                <span class="number"> {{i+1}}</span>
+                <span class="type"> {{item.type}}</span>
+                <a
+                  class="title"
+                  target="vue-iron"
+                  :href="item.link"
+                >{{ item.title }}</a>
+              </div>
+            </transition>
+            <!-- 重點到這 -->
+            <a
+              v-if="index < total-1"
+              class="arrow right"
+              @click="changeIndex(1)"
+            ></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js'></script>
+  <script src="./js/lol.js"></script>
+</body>
+
+</html>

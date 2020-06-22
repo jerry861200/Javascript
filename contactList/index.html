@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+  <title>Document</title>
+</head>
+
+<body>
+  <section id="app">
+    <section v-if="loading">loading</section>
+    <section v-else="loading">
+      <span>新增</span>
+      <input
+        type="text"
+        name="email"
+        v-model.trim="input.email"
+        placeholder="email"
+      >
+
+      <input
+        type="text"
+        name="name"
+        v-model.trim="input.name"
+        @keyup.enter="inputHandler()"
+        placeholder="姓名"
+      >
+      <button @click="submitHandler">送出</button>
+      <button @click="cancelHandler">刪除</button>
+
+
+      <div>
+        <div v-for="(item,index) in contacts">
+          <span> {{ item.id}} </span>
+          <span> {{item.name}} </span>
+          <span> {{item.email}} </span>
+          <button @click="updateHandler(index)">修改</button>
+          <button @click="deleteHandler(index)">刪除</button>
+        </div>
+      </div>
+    </section>
+
+  </section>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js'></script>
+  <script>
+    ;
+    (function (Vue) {
+      let data = {
+        input: {
+          name: '',
+          email: ''
+        },
+        contacts: [],
+        editIndex: null,
+        loading: false
+      }
+
+      new Vue({
+        el: '#app',
+        data: data,
+        mounted() {
+          this.loading = true;
+          axios.get('http://localhost:3000/contact')
+            .then((res) => {
+              this.contacts = res.data;
+              this.loading = false;
+            }).catch((err) => {
+              console.log(err);
+            })
+        },
+        methods: {
+          submitHandler() {
+            let {
+              name,
+              email
+            } = this.input;
+            if (!name || !email) return
+            if (this.editIndex === null) {
+              this.loading = true;
+              axios.post('http://localhost:3000/contact', {
+                  name,
+                  email
+                })
+                .then((res) => {
+                  this.contacts.push(res.data);
+                  this.cancelHandler();
+                  this.loading = false;
+
+                }).catch((err) => {
+                  console.log(err);
+                })
+            } else {
+              axios.put(`http://localhost:3000/contact/${this.editIndex+1}` , this.input ).then((res)=>{
+                this.contacts[editIndex] = res.data
+                this.cancelHandler()
+                this.loading = false
+              }).catch()
+            }
+
+
+          },
+          cancelHandler() {
+            this.input.name = ''
+            this.input.email = ''
+            this.editIndex = null;
+          },
+          deleteHandler(index) {
+            let target = this.contacts[index];
+
+            if (confirm(`是否刪除${target.name}?`)) {
+              this.loading = true;
+              axios.delete('http://localhost:3000/contact/' + target.id)
+                .then((res) => {
+                  this.contacts.splice(index, 1);
+                  this.loading = false;
+                }).catch((err) => {
+                  console.log(err);
+                })
+            } else {
+              return
+            }
+
+          },
+          updateHandler(index) {
+            let {
+              name,
+              email
+            } = this.contacts[index];
+            this.input = {
+              name,
+              email
+            }
+            this.editIndex = index;
+          }
+        },
+        computed: {
+          typeMenu() {
+            if (this.filter.type === '全部') {
+              return this.menu;
+            } else {
+              return this.menu.filter(item => item.type === this.filter.type)
+            }
+          },
+          titleMenu() {
+            if (this.filter.title === '') {
+              return this.typeMenu
+            } else {
+
+              return this.typeMenu.filter(item => item.title.includes(this.filter.title))
+            }
+          }
+        }
+      })
+    })(Vue)
+  </script>
+</body>
+
+</html>
